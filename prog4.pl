@@ -1,4 +1,4 @@
-### Question 1 ###
+%Problem1
 male(mushu).
 male(tangdee).
 female(mulan).
@@ -22,37 +22,44 @@ male(X) :- child(X,_).
 female(X) :- mother(X,_).
 female(X) :- aunt(X,_).
 female(X) :- child(X,_).
-aunt(X,Y) :- female(X), parent(Z,Y), sister(X,Z). 
+aunt(X,Y) :- parent(Z, Y), sibling(Z, X).
 child(Y,X) :- parent(X,Y).
-sibling(X,Y) :- father(Z,W), father(Z,Y), mother(W,X), mother(W,Y), not(X = Y).
-brother(X,Y) :- male(X, sibling(X,Y).
-sister(X,Y) :- female(X), sibling(X,Y).
+sibling(X,Y) :- father(Z, X), father(Z, Y), not(X=Y).
+sibling(X,Y) :- mother(W, X), mother(W, Y), not(X=Y).
+brother(X,Y) :- sibling(X,Y), male(X).
+sister(X,Y) :- sibling(X,Y), female(X).
 parent(X,Y) :- mother(X,Y).
 parent(X,Y) :- father(X,Y).
 granddaughter(X,Z) :- female(X), child(X,Y), child(Y,Z).
-descendant(X,Y) :- granddaughter(X,Y).
-descendant(X,Y) :- child(X,Y).
+descendant(X,Y) :- (father(Y,X); mother(Y,X)); 
+		(father(Y,Z); mother(Y,Z)), descendant(X,Z).
 
-### Question 2 ###
-final(H, [ H ]).
-final([ _ | T ], H) :- final(T,H).
+%Problem2
+final(H, [H]).
+final(H, [_ | T]) :- final(H, T).
 
-### Question 3 ###
-match(X,[X|T]).
-ns(S,X0) :- match(x,S,X0), match(X,S).
-nx(X,X0) :- match(x,S,X0), match(X,S) .
-nx(X,X0) :- match(Y,S).
-ny(Y,X0) :- match(y,S,X0), match(Z,S).
-nz([ ],[ ]) :- [ ]
-nz(Z,X0) :- match(y,S,X0), match(Z,S).
+%Problem3
+match(X,[X|T], T).
 
-### Question 4 ###
-democrat([a,b,c,d,e]).
-dem_candidate(X) :- member(X, democrats), tests(X)
-dem_candidate(X)
-member(a,[a,b,c,d,e])
-a(X, Y) :- b(X), !, c(Y)
-### OR ###
-dem_candidate(X) :- democrat(L), member_cut(X, L)
-member_cut(Elm, [Elm | _]) :- !
-### Using trace. ###
+z([],[]).
+
+s(X0, X) :- match(x,X0, X1), ns(X1, X).
+ns(X0, X) :-  match(x,X0, X1), ns(X1, X).
+ns(X0, X) :- ny(X0, X).
+ny(X0, X) :- match(y, X0, X1), nz(X1, X).
+nz(X0, X) :- z(X0,X).
+nz(X0, X) :- match(y, X0, X1), nz(X1, X).
+
+%Problem4
+alive([beto, hillary, barack, bernie, bill]).
+dems([beto, hillary, barack, bernie, bill]). 
+formerPres([barack, bill]).
+
+tests(Candidate) :- (alive(NotDeadList), member(Candidate, NotDeadList)),
+(formerPres(FPList), member(Candidate, FPList)).
+
+member(Elm, [_ | List]) :- member(Elm, List).
+
+dem_candidate(Candidate) :- dems(DemocratList), member(Candidate, DemocratList), tests(Candidate). 
+
+
