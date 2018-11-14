@@ -32,3 +32,26 @@ parent(X,Y) :- father(X,Y).
 granddaughter(X,Z) :- female(X), child(X,Y), child(Y,Z).
 descendant(X,Y) :- granddaughter(X,Y).
 descendant(X,Y) :- child(X,Y).
+
+### Question 2 ###
+final(H, [ H ]).
+final([ _ | T ], H) :- final(T,H).
+
+### Question 3 ###
+match(X,[X|T]).
+ns(S,X0) :- match(x,S,X0), match(X,S).
+nx(X,X0) :- match(x,S,X0), match(X,S) .
+nx(X,X0) :- match(Y,S).
+ny(Y,X0) :- match(y,S,X0), match(Z,S).
+nz([ ],[ ]) :- [ ]
+nz(Z,X0) :- match(y,S,X0), match(Z,S).
+
+### Question 4 ###
+dem_candidate(X) :- member(X, democrats), tests(X)
+dem_candidate(X)
+member(a,[a,b,c,d,e])
+a(X, Y) :- b(X), !, c(Y)
+### OR ###
+dem_candidate(X) :- democrat(L), member_cut(X, L)
+member_cut(Elm, [Elm | _]) :- !
+### Using trace. ###
