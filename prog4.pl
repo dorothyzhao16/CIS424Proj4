@@ -47,6 +47,7 @@ nz([ ],[ ]) :- [ ]
 nz(Z,X0) :- match(y,S,X0), match(Z,S).
 
 ### Question 4 ###
+democrat([a,b,c,d,e]).
 dem_candidate(X) :- member(X, democrats), tests(X)
 dem_candidate(X)
 member(a,[a,b,c,d,e])
